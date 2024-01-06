@@ -1,0 +1,52 @@
+version: "3.9"
+services:
+  
+  postgres:
+    container_name: healthemr-db
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      PGDATA: /data/postgres
+    volumes:
+       - postgres-db:/data/postgres
+    ports:
+      - "5446:5432"
+    networks:
+      - healthemr-backend
+
+  keycloak:
+      container_name: healthemr-iam
+      image: quay.io/keycloak/keycloak:21.1.1
+
+      command:
+        -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled -Dkeycloak.profile.feature.token_exchange=enabled start-dev --http-relative-path=/auth
+        -Djboss.http.port=8080
+      environment:
+        KC_DB: postgres
+        KC_DB_USERNAME: postgres
+        KC_DB_PASSWORD: postgres
+        KC_DB_SCHEMA: public
+        KC_DB_URL: jdbc:postgresql://healthemr-db:5432/postgres
+        KEYCLOAK_ADMIN: admin
+        KEYCLOAK_ADMIN_PASSWORD: admin
+        KEYCLOAK_LOGLEVEL: ALL
+        KC_LOGL_EVEL: ALL
+        ROOT_LOGLEVEL: ALL
+      ports:
+        - 8090:8080
+      volumes:
+        - ./healthemr-dev.json:/tmp/realm.json
+      networks:
+        - healthemr-backend
+
+
+
+volumes:
+  postgres-db:
+    driver: local
+ 
+networks:
+  healthemr-backend:
+    name: healthemr-backend

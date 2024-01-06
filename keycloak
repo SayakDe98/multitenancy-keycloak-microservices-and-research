@@ -1,0 +1,52 @@
+keycloak
+IAM:
+-It is self hosted so we can run it in our own serverand can integrate with any service
+-We can centrally manage all users
+
+How to run keycloak:
+Use docker to run keycloak - use this site: https://www.keycloak.org/getting-started/getting-started-docker
+
+Start Keycloak
+From a terminal inside a folder like keycloak-code, enter the following command to start Keycloak:
+
+docker run -p 4000:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:23.0.1 start-dev
+
+Above command downloads keycloak image from docker hub then we set in the admin id, password, port mapping. We map the 4000 of our machine to 8080 port of docker
+
+We should run this in detach mode. Detach mode freezes the terminal, means we don't need to keep terminal open when keycloak is running. Once all the steps are done the terminal is freed up so we can use it for performing other tasks from the same terminal
+
+docker run -d -p 4000:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:23.0.1 start-dev
+
+Use docker image ls to see running docker images
+
+Now go to localhost:4000 for checking if keycloak is running properly
+
+Now let's create admin interface:
+First login to administration console and enter the credentials:
+user: admin
+password: admin
+
+First thing is to create a new realm.
+By default we have the master realm. It is advisable not to change settings in the master realm.
+Create a new realm. Configure all the settings there.
+If we have two different apps we don't need to setup two different keycloak servers rather we will
+use two different realms.
+
+CREATE A NEW REALM:
+Click on the hamburger icon if small screen size / click on dropdown on top left and click on master
+Click on Create realm
+Name it myrealm
+Submit the form and new realm is created.
+
+CREATE A NEW CLIENT:
+Click Clients from sidenav
+Create a new client. Name: myclient, clientid: myclient
+Click on next, next,save and thus a new client is created.
+
+
+
+Keycloak multitenancy:
+-Use attribute for User or User groups or discriminator as your tenant
+ - Drawbacks:
+ 	Difficult for tenant administrators who want to manage their own users
+

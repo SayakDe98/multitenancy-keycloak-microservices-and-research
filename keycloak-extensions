@@ -1,0 +1,58 @@
+Apple Identity Provider:
+-We can integrate apple IDP. We need to pass the client id, client secret, team id, key id, p8 key, default scopes
+
+keycloak protocol cas:
+-This plugin for Keycloak Identity and Access Management (http://www.keycloak.org) adds the CAS 3.0 SSO protocol as an available client protocol to the Keycloak system. It implements the required Service Provider Interfaces (SPIs) for a Login Protocol and will be picked up and made available by Keycloak automatically once installed.
+
+keycloak cassandra extension:
+-Uses Apache Cassandra to store and retrieve entities of all storage areas except authorization and events.
+-This extensions enables users to get rid of Infinispan for caching and use Cassandra instead! The benefits are much easier operations and a proven way for multi-site setups, where Cassandra handles all the Cross-DC Synchronizations.
+
+keycloak authorization:
+-The purpose of this module is to add authorization capabilities to keycloak for a given client, whether the client itself has the capability to handle authorization or not. This means that:
+
+-Any type of keycloak client can have an authorization layered on top of authentication, not just OIDC clients.
+-The authorization only works as long as keycloak is in the path of requests to a resource.
+
+Configuration as code for keycloak realms:
+-keycloak-config-cli is a Keycloak utility to ensure the desired configuration state for a realm based on a JSON/YAML file. The format of the JSON/YAML file based on the export realm format. Store and handle the configuration files inside git just like normal code. A Keycloak restart isn't required to apply the configuration.
+
+Discord IDP:
+-We can use Discords IDP for authentication.
+
+Event Listener Utilities:
+-Useful event listener implementations and utilities. Webhooks, scripts, HTTP, etc
+
+Home IDP:
+What is it good for?
+When a federated user wants to login via Keycloak, Keycloak will present a username/password form and a list of configured identity providers to the user. The user needs to choose an identity provider to get redirected. This authenticator allows to skip the step of selecting an identity provider.
+
+How does it work?
+If this authenticator gets configured as part of a browser based login flow, Keycloak will present a username form (without password form and without list of configured identity providers). A user can then enter an email address. Keycloak will then choose an identity provider based on the domain part of the provided email address and forward the user to the chosen provider.
+
+IBM Security Verify Authenticator Extensions for Keycloak/RedHat SSO:
+-This repository contains development of a set of authenticator extensions for enhancing authentication capabilities with Keycloak and/or RedHat SSO with IBM Security Verify.
+
+KeyCloak Multitenancy:
+Features:
+-Creation of a tenant during registration (Required action)
+-Invitations for users to join the tenant (API)
+-Review of pending invitations (Required action)
+-Selection of active tenant on login (Required action)
+
+ORCID social IDP:
+-This Keycloak plugin makes possible to add ORCID as Social Identity Provider. ORCID is one of the most popular authentication options for research & education scenarios, including access to the European Open Science Cloud (EOSC). Although ORCID can be configured as an OpenID Connect Identity Provider, the current ORCID OIDC implementation does not support the release of email and other information (see ORCID OpenID Connect documentation).
+
+Organisations for keycloak:
+-This project intends to provide a range of Keycloak extensions focused on solving several of the common use cases of multi-tenant SaaS applications that Keycloak does not solve out of the box.
+
+Keycloak Passport Strategy:
+his library offers a production-ready and maintained Keycloak Passport connector that offers the following key features:
+
+-Use multiple realms in the same application (multi-tenancy)
+
+-Use with oAuth2/Open ID Connect 'clients' in keycloak
+
+-Fetch users' data from keycloak automatically via the JSON API
+
+

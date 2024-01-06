@@ -1,0 +1,62 @@
+version: "3.9"
+services:
+  
+  postgres:
+    container_name: healthemr-db-2
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+       - postgres-db:/data/postgres
+    ports:
+      - "5443:5432"
+    networks:
+      - healthemr-backend-2
+
+  keycloak:
+      container_name: healthemr-iam-2
+      image: quay.io/phasetwo/phasetwo-keycloak:22.0.3
+
+      # command:
+        # ['start-dev --import-realm --http-relative-path=/auth']
+      command: 
+        -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled -Dkeycloak.profile.feature.token_exchange=enabled start-dev --import-realm --http-relative-path=/auth --db=postgres --db-url=jdbc:postgresql://localhost:5443/postgres --db-username=postgres --db-password=postgres
+      environment:
+        # DB_VENDOR: POSTGRES
+        # DB_ADDR: healthemr-db-2
+        # DB_DATABASE: postgres
+        # DB_USER: postgres
+        # DB_SCHEMA: public
+        # DB_PASSWORD: postgres
+        KEYCLOAK_ADMIN: admin
+        KEYCLOAK_ADMIN_PASSWORD: admin
+        KC_DB_USERNAME: postgres
+        KC_DB_PASSWORD: postgres
+        KC_DB_URL_HOST: localhost
+        KC_DB_URL_PORT: 5443
+        KC_DB_URL_DATABASE: postgres
+        KC_HOSTNAME: localhost
+        # KC_DB_URL: jdbc:postgresql://localhost:5443/postgres
+        # KEYCLOAK_LOGLEVEL: ALL
+        KC_LOG_LEVEL: ALL
+        # ROOT_LOGLEVEL: ALL
+        # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+        #JDBC_PARAMS: "ssl=true"
+      ports:
+        - 8090:8080
+      volumes:
+        - ./healthemr-dev.json:/tmp/realm.json
+      networks:
+        - healthemr-backend-2
+
+
+
+volumes:
+  postgres-db:
+    driver: local
+ 
+networks:
+  healthemr-backend-2:
+    name: healthemr-backend-2

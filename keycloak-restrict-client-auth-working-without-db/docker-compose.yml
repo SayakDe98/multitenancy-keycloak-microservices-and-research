@@ -1,0 +1,20 @@
+version: '3'
+services:
+  keycloak:
+    container_name: keycloak1
+    image: quay.io/keycloak/keycloak:23.0.1
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      DEBUG_PORT: '*:8787'
+      DEBUG: 'true'
+    command: 
+      -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled -Dkeycloak.profile.feature.token_exchange=enabled start-dev
+        -Djboss.http.port=8080 -Dkeycloak.profile.feature.scripts=enabled --http-relative-path=/auth
+    ports:
+      - 8080:8080
+      - 8443:8443
+      - 8787:8787
+    volumes:
+    - ./target/keycloak-restrict-client-auth.jar/keycloak-restrict-client-auth.jar:/opt/keycloak/providers/keycloak-restrict-client-auth.jar
+    - ./src/test/resources/:/opt/keycloak/data/import

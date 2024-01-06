@@ -1,0 +1,57 @@
+yarn migration:generate src/migrations/public/publicMigration
+import { join } from "path";
+import { ProviderGroupEntity } from "src/entities/provider-group.entity";
+import { UserEntity } from "src/entities/user.entity";
+import { DataSource, DataSourceOptions } from "typeorm";
+// require(__dirname);
+export const dataSourceOptions: DataSourceOptions = {
+  type: 'postgres',
+  host: 'localhost',
+  port: 5432,
+  username: 'postgres',
+  password: 'pass',
+  database: 'postgres2',
+  logging: true,
+//   entities: [join(__dirname, '../../dist/src/entities/*.entity.js')],
+entities: [UserEntity, ProviderGroupEntity],
+  migrations: [__dirname + '/migrations/**/*.js'],
+  //   entities: ['dist/entities/*.entity{.ts, .js}'],
+  //   migrations: ['dist/migrations/public/*{.ts, .js}'],
+    // synchronize: true
+};
+
+const dataSource = new DataSource(dataSourceOptions);
+
+export default dataSource;
+
+Alternative using __dirname in file data-source.ts:
+
+import { join } from "path";
+import { ProviderGroupEntity } from "src/entities/provider-group.entity";
+import { UserEntity } from "src/entities/user.entity";
+import { DataSource, DataSourceOptions } from "typeorm";
+// require(join(__dirname, '../../dist/src/entities/*.entity{.js, .ts}'));
+export const dataSourceOptions: DataSourceOptions = {
+  type: 'postgres',
+  host: 'localhost',
+  port: 5432,
+  username: 'postgres',
+  password: 'pass',
+  database: 'postgres3',
+  logging: true,
+//   entities: [join(__dirname, '../../dist/src/entities/*.entity.js')],
+entities: [join(__dirname, '../../dist/src/entities/*.entity{.js, .ts}')],
+// entities: [UserEntity, ProviderGroupEntity],
+  migrations: [__dirname + '/migrations/**/*.js'],
+  //   entities: ['dist/entities/*.entity{.ts, .js}'],
+  //   migrations: ['dist/migrations/public/*{.ts, .js}'],
+    synchronize: true
+};
+
+const dataSource = new DataSource(dataSourceOptions);
+
+export default dataSource;
+On connecting to new db
+We need to run the generate migration command with syncronize false. The command is yarn migration:generate dist/db/migrations/public/publicMigration
+that will gen a migration file with raw queries
+now we can create new provider group if we want to and will generate a new schema with tables in it
